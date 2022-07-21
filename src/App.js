@@ -1,23 +1,31 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import Signin from "./Components/Signin";
+import { HomeUser } from "./Components/HomeUser";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { ProtectedRoute } from "./Services/ProtectedRoute";
+import { useState } from "react";
+import { SessionContext } from "./Services/SessionContext";
+import Header from "./Components/Header";
 
 function App() {
+  const [user, setUser] = useState(null);
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Header />
+        <Router>
+          <Routes>
+            <Route path="/" element={<Signin />} exact />
+            <Route
+              path="/Home"
+              element={
+                <ProtectedRoute>
+                  <HomeUser />
+                </ProtectedRoute>
+              }
+            />
+          </Routes>
+        </Router>
+
     </div>
   );
 }
