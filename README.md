@@ -1,9 +1,9 @@
-#FitnessCal Front
+# FitnessCal Front
 
 In this repo we can find code for front.
 That was made with framework React.js
 
-###Commands
+### Commands
 
 - npm start
 this command will start our server
