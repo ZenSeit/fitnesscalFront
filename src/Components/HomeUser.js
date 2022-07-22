@@ -5,6 +5,7 @@ import defaultImage from "../Images/userDefault.png";
 import "../Stylesheets/homeuser.css";
 import UserDay from "./UserDay";
 
+
 export function HomeUser() {
   const [user, setUser] = useState(null);
   const [macros, setMacros] = useState({
@@ -56,6 +57,8 @@ export function HomeUser() {
         return "4 or 5 times per week, awesome";
       case 5:
         return "6 or 7 times per week, insane but rest is important too";
+      default:
+        return "No exercise";
     }
   };
 
@@ -145,7 +148,7 @@ export function HomeUser() {
                   Gender:
                   {user.gender
                     ? "Male"
-                    : user.gender == 2
+                    : user.gender === 2
                     ? "Female"
                     : "No one"}
                 </h4>
@@ -180,15 +183,15 @@ export function HomeUser() {
                     } g`}
                   </h5>
                   <h5>
-                    Fat :
-                    {`${
-                      calculateCalories(user?.caloriesGoal, macros.fat) / 9
-                    } g`}
-                  </h5>
-                  <h5>
                     Carbs :
                     {`${
                       calculateCalories(user?.caloriesGoal, macros.carbs) / 4
+                    } g`}
+                  </h5>
+                  <h5>
+                    Fat :
+                    {`${
+                      calculateCalories(user?.caloriesGoal, macros.fat) / 9
                     } g`}
                   </h5>
                 </div>
@@ -198,7 +201,11 @@ export function HomeUser() {
         </div>
         
       </div>
-      <UserDay idUser={VerifyToken().myDecodedToken} />
+      <UserDay idUser={VerifyToken().myDecodedToken}
+      prote={calculateCalories(user?.caloriesGoal, macros.prot) / 4}
+      carbs={calculateCalories(user?.caloriesGoal, macros.carbs) / 4}
+      fat={calculateCalories(user?.caloriesGoal, macros.fat) / 9}
+      />
       </div>
     </>
   );

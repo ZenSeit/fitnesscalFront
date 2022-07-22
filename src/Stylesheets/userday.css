@@ -1,0 +1,21 @@
+.facts--section{
+    display: flex;
+    flex-direction: column;
+}
+
+.facts--day{
+    display: flex;
+    justify-content: space-between;
+}
+
+.facts--food{
+    min-width: 30%;
+}
+
+.facts--info{
+    display: flex;
+    flex-direction: column;
+    min-width: 40%;
+    align-items: center;
+    padding: 30px;
+}
