@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import Food from "./Food";
 import "../Stylesheets/userday.css";
+import ModalAddFood from "./ModalAddFood";
 
-export default function UserDay({ idUser, prote, carbs, fat }) {
+export default function UserDay({ idUser, prote, carbs, fat, foodAvailable }) {
   const [foodDay, setFoodDay] = useState([]);
   const [factsDay, setFactsDay] = useState({
     proteinDay: 0,
@@ -11,16 +12,16 @@ export default function UserDay({ idUser, prote, carbs, fat }) {
   });
 
   const styleGoal = {
-    backgroundColor: 'green',
-    color: 'white',
-    borderRadius: '10px'
-  }
+    backgroundColor: "green",
+    color: "white",
+    borderRadius: "10px",
+  };
 
   const styleUnderGoal = {
-    backgroundColor: 'red',
-    color: 'white',
-    borderRadius: '10px'
-  }
+    backgroundColor: "red",
+    color: "white",
+    borderRadius: "10px",
+  };
 
   const days = [
     { day: "Monday", cod: 0 },
@@ -41,9 +42,11 @@ export default function UserDay({ idUser, prote, carbs, fat }) {
     let carb = 0;
     let fat = 0;
     foodDay.map((fDay) => {
-      prot += fDay.fd.proteinQGr*fDay.quantityuser/fDay.fd.referenceQuantity;
-      carb += fDay.fd.carbsQGr*fDay.quantityuser/fDay.fd.referenceQuantity;
-      fat += fDay.fd.fatQGr*fDay.quantityuser/fDay.fd.referenceQuantity;
+      prot +=
+        (fDay.fd.proteinQGr * fDay.quantityuser) / fDay.fd.referenceQuantity;
+      carb +=
+        (fDay.fd.carbsQGr * fDay.quantityuser) / fDay.fd.referenceQuantity;
+      fat += (fDay.fd.fatQGr * fDay.quantityuser) / fDay.fd.referenceQuantity;
     });
     setFactsDay({
       proteinDay: prot,
@@ -87,6 +90,21 @@ export default function UserDay({ idUser, prote, carbs, fat }) {
     getValue(day);
   };
 
+  const updateDataRel = async (nQ, idrel, day) => {
+    const data = await fetch(
+      `http://localhost:8080/api/updateFooduser/${idUser}?idRel=${idrel}&nQuantity=${nQ}`,
+      {
+        method: "GET",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    getValue(day);
+    return await data.text();
+  };
+
   const fDay = foodDay.map((fDay) => {
     return (
       <Food
@@ -100,6 +118,7 @@ export default function UserDay({ idUser, prote, carbs, fat }) {
         }
         description={fDay.fd.description}
         day={fDay.day}
+        updateFood={updateDataRel}
         delButton={deleteFood}
       />
     );
@@ -107,28 +126,51 @@ export default function UserDay({ idUser, prote, carbs, fat }) {
 
   return (
     <div className="facts--section">
-      <select name="Day" onChange={(e) => getValue(e.target.value)}>
-        {days.map((day) => {
-          return (
-            <option key={day.cod} value={day.cod}>
-              {day.day}
-            </option>
-          );
-        })}
-      </select>
       <div className="facts--day">
-        <div className="facts--food">
-          {fDay.length === 0 ? <h4>There's not food for this day</h4> : fDay}
+        <div className="wrapper--food">
+          <select name="Day" onChange={(e) => getValue(e.target.value)}>
+            {days.map((day) => {
+              return (
+                <option key={day.cod} value={day.cod}>
+                  {day.day}
+                </option>
+              );
+            })}
+          </select>
+          <div className="facts--food">
+            {fDay.length === 0 ? <h4>There's not food for this day</h4> : fDay}
+          </div>
+          <div className="addsection--food">
+            <ModalAddFood foodAvailable={foodAvailable} />
+          </div>
         </div>
         <div className="facts--info">
-          <h4 style={factsDay.proteinDay>=prote*0.99 ? styleGoal:styleUnderGoal} >Protein: </h4>
+          <h4
+            style={
+              factsDay.proteinDay >= prote * 0.99 ? styleGoal : styleUnderGoal
+            }
+          >
+            Protein:{" "}
+          </h4>
           {factsDay.proteinDay}
-          <h4 style={factsDay.proteinDay>=carbs*0.99 ? styleGoal:styleUnderGoal} >Carbs: </h4>
+          <h4
+            style={
+              factsDay.proteinDay >= carbs * 0.99 ? styleGoal : styleUnderGoal
+            }
+          >
+            Carbs:{" "}
+          </h4>
           {factsDay.carbsDay}
-          <h4 style={factsDay.proteinDay>=fat*0.99 ? styleGoal:styleUnderGoal} >Fat: </h4>
+          <h4
+            style={
+              factsDay.proteinDay >= fat * 0.99 ? styleGoal : styleUnderGoal
+            }
+          >
+            Fat:{" "}
+          </h4>
           {factsDay.fatDay}
           <h4>Day's Calories</h4>
-          {(factsDay.proteinDay+factsDay.carbsDay)*4+factsDay.fatDay*9}
+          {(factsDay.proteinDay + factsDay.carbsDay) * 4 + factsDay.fatDay * 9}
         </div>
       </div>
     </div>

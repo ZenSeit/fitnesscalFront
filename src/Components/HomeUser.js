@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import defaultImage from "../Images/userDefault.png";
 import "../Stylesheets/homeuser.css";
 import UserDay from "./UserDay";
+import SearchBar from "./SearchBar";
 
 
 export function HomeUser() {
@@ -22,6 +23,7 @@ export function HomeUser() {
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json",
+          "Authorization":`${localStorage.getItem("token")}`
         },
       }
     );
@@ -30,6 +32,22 @@ export function HomeUser() {
     const res = await json[0];
     setUser(res);
   };
+
+  const getFood = async () => {
+    const data = await fetch(
+      "http://localhost:8080/api/getFood/",
+      {
+        method: "GET",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    const json = await data.json();
+    return await json;
+  }
 
   let history = useNavigate();
 
@@ -130,7 +148,7 @@ export function HomeUser() {
               className="avatar--user"
             />
             {user && (
-              <h1>Bienvenido {user.nickname || `usuario ${user.id}`}!</h1>
+              <h1>Welcome {user.nickname || `usuario ${user.id}`}!</h1>
             )}
           </div>
           {user && (
@@ -205,6 +223,7 @@ export function HomeUser() {
       prote={calculateCalories(user?.caloriesGoal, macros.prot) / 4}
       carbs={calculateCalories(user?.caloriesGoal, macros.carbs) / 4}
       fat={calculateCalories(user?.caloriesGoal, macros.fat) / 9}
+      foodAvailable={getFood}
       />
       </div>
     </>

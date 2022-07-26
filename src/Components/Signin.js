@@ -6,24 +6,15 @@ import { useNavigate, useLocation, Link } from "react-router-dom";
 import { SessionContext } from "../Services/SessionContext";
 
 function Signin() {
-  const { state } = useLocation();
-
-  // const { user, setUser } = useContext(SessionContext);
-
-  console.log(state);
+  const {state} = useLocation();
 
   const nav = useNavigate();
-
-  /*
-  if (user) {
-    nav(nav(state?.pathname ?? "/Home"));
-  }*/
 
   console.log(VerifyToken().availableToken);
 
   useEffect(() => {
     if (VerifyToken().availableToken) {
-      nav(nav(state?.pathname ?? "/Home"));
+      nav(state?.pathname ?? "/Home")
     }
   }, []);
 

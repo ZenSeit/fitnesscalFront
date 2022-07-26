@@ -1,7 +1,9 @@
 import React from "react";
 import "../Stylesheets/food.css";
+import ModalEdit from "./ModalEdit";
+import { MDBBtn,MDBIcon } from "mdb-react-ui-kit";
 
-export default function Food({ id, name, quantity, day, description, delButton }) {
+export default function Food({ id, name, quantity, day, description, updateFood, delButton }) {
 
   return (
     <div className="food--container">
@@ -15,8 +17,8 @@ export default function Food({ id, name, quantity, day, description, delButton }
           <h6>{description}</h6>
         </div>
         <div>
-        <button onClick={()=> console.log(id)}>edit</button>
-        <button onClick={()=>delButton(id,day)}>del</button>
+        <ModalEdit id={id} updateFood={updateFood} day={day} />
+        <MDBBtn onClick={()=>delButton(id,day)} className="del--food" ><MDBIcon fas icon="times" /></MDBBtn>
         </div>
         
       </div>

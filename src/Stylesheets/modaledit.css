@@ -1,0 +1,17 @@
+.edit--btn {
+  background: rgb(201, 217, 0);
+  background: linear-gradient(
+    180deg,
+    rgba(201, 217, 0, 1) 0%,
+    rgba(185, 170, 26, 1) 87%
+  );
+  margin: 5px;
+}
+
+.content--modal{
+    color: black;
+}
+
+.send--modal{
+    margin-top: 15px;
+}
