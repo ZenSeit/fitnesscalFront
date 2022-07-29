@@ -13,37 +13,27 @@ import {
 } from "mdb-react-ui-kit";
 import "../Stylesheets/modaledit.css";
 import { VerifyToken } from "../Services/Login";
+import Select from "./Select";
+import {unitMeasurent} from '../Services/GeneralData'
 
-export default function ModalEdit({ id, updateFood, day }) {
+export default function ModalEdit({ id, updateFood, day, getData }) {
   const [basicModal, setBasicModal] = useState(false);
   const [res, setRes] = useState({});
   const idus = VerifyToken().myDecodedToken;
   const [qua, setQua] = useState(0);
+  const [uFood,setUFood]=useState(0)
 
   const toggleShow = async () => {
-    const res = await getRel();
+    const res = await getData(idus,id);
     setBasicModal(!basicModal);
     setRes(res);
     setQua(res?.quantityuser);
-  };
-
-  const getRel = async () => {
-    const data = await fetch(
-      `http://localhost:8080/api/getOfooduser/${idus}?idRel=${id}`,
-      {
-        method: "GET",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-      }
-    );
-    return await data.json();
+    setUFood(res?.formQuantity)
   };
 
   const updateData = async (e) => {
     e.preventDefault();
-    const res = await updateFood(e.target.form1.value, id, day);
+    const res = await updateFood(e.target.form1.value, id, day,uFood);
     alert(res);
     setBasicModal(!basicModal);
   };
@@ -74,6 +64,7 @@ export default function ModalEdit({ id, updateFood, day }) {
                   min={0}
                   onChange={(e) => setQua(e.target.value)}
                 />
+                <Select name="unitFood" data={unitMeasurent} actionSelect={setUFood} valueSelected={uFood} />
                 <MDBBtn className="send--modal">Save changes</MDBBtn>
               </form>
             </MDBModalBody>

@@ -1,7 +1,12 @@
 import React, { useEffect, useState } from "react";
-import Food from "./Food";
 import "../Stylesheets/userday.css";
 import ModalAddFood from "./ModalAddFood";
+import { days } from "../Services/GeneralData";
+import Select from "./Select";
+import { ContentFood } from "./ContentFood";
+import {getRelFood} from '../Services/DataDB'
+import ModalEdit from "./ModalEdit";
+import { MDBBtn } from "mdb-react-ui-kit";
 
 export default function UserDay({ idUser, prote, carbs, fat, foodAvailable }) {
   const [foodDay, setFoodDay] = useState([]);
@@ -10,6 +15,7 @@ export default function UserDay({ idUser, prote, carbs, fat, foodAvailable }) {
     carbsDay: 0,
     fatDay: 0,
   });
+  const [daySelected, setDaySelected] = useState(0);
 
   const styleGoal = {
     backgroundColor: "green",
@@ -22,16 +28,6 @@ export default function UserDay({ idUser, prote, carbs, fat, foodAvailable }) {
     color: "white",
     borderRadius: "10px",
   };
-
-  const days = [
-    { day: "Monday", cod: 0 },
-    { day: "Tuesday", cod: 1 },
-    { day: "Wednesday", cod: 2 },
-    { day: "Thursday", cod: 3 },
-    { day: "Friday", cod: 4 },
-    { day: "Saturday", cod: 5 },
-    { day: "Sunday", cod: 6 },
-  ];
 
   useEffect(() => {
     getValue();
@@ -70,6 +66,7 @@ export default function UserDay({ idUser, prote, carbs, fat, foodAvailable }) {
     );
 
     const json = await data.json();
+    setDaySelected(day);
     setFoodDay(json);
   };
 
@@ -90,61 +87,54 @@ export default function UserDay({ idUser, prote, carbs, fat, foodAvailable }) {
     getValue(day);
   };
 
-  const updateDataRel = async (nQ, idrel, day) => {
+  const updateDataRel = async (nQ, idrel, day, ufood) => {
+    const nQuantity = nQ;
+    const formQ = ufood;
     const data = await fetch(
-      `http://localhost:8080/api/updateFooduser/${idUser}?idRel=${idrel}&nQuantity=${nQ}`,
+      `http://localhost:8080/api/updateFooduser/${idUser}?idRel=${idrel}`,
       {
-        method: "GET",
+        method: "POST",
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json",
         },
+        body: JSON.stringify({
+          nQuantity,
+          formQ,
+        }),
       }
     );
     getValue(day);
     return await data.text();
   };
 
-  const fDay = foodDay.map((fDay) => {
-    return (
-      <Food
-        key={fDay.id}
-        id={fDay.id}
-        name={fDay.fd.name}
-        quantity={
-          fDay.formQuantity
-            ? `${fDay.quantityuser} units`
-            : `${fDay.quantityuser} g`
-        }
-        description={fDay.fd.description}
-        day={fDay.day}
-        updateFood={updateDataRel}
-        delButton={deleteFood}
-      />
-    );
-  });
-
   return (
     <div className="facts--section">
       <div className="facts--day">
         <div className="wrapper--food">
-          <select name="Day" onChange={(e) => getValue(e.target.value)}>
-            {days.map((day) => {
-              return (
-                <option key={day.cod} value={day.cod}>
-                  {day.day}
-                </option>
-              );
-            })}
-          </select>
-          <div className="facts--food">
-            {fDay.length === 0 ? <h4>There's not food for this day</h4> : fDay}
-          </div>
+          <Select
+            name="day"
+            data={days}
+            actionSelect={getValue}
+            valueSelected={daySelected}
+          />
+          <ContentFood
+            dataFood={foodDay}
+            updateDataRel={updateDataRel}
+            deleteFood={deleteFood}
+            getData={getRelFood}
+            Button1={ModalEdit}
+            Button2={MDBBtn}
+          />
           <div className="addsection--food">
-            <ModalAddFood foodAvailable={foodAvailable} />
+            <ModalAddFood
+              foodAvailable={foodAvailable}
+              daySelected={daySelected}
+            />
           </div>
         </div>
         <div className="facts--info">
+          <h4>{days[daySelected].name}</h4>
           <h4
             style={
               factsDay.proteinDay >= prote * 0.99 ? styleGoal : styleUnderGoal

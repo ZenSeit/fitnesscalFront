@@ -1,0 +1,16 @@
+.Main--food{
+    width: 100%;
+    display: flex;
+    margin: 30px;
+}
+
+.left--food{
+    margin: 10px 20px 20px 30px;
+}
+
+.search--food{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+}

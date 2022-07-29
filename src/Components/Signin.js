@@ -8,9 +8,9 @@ import { SessionContext } from "../Services/SessionContext";
 function Signin() {
   const {state} = useLocation();
 
-  const nav = useNavigate();
+  const {user,setUser} = useContext(SessionContext)
 
-  console.log(VerifyToken().availableToken);
+  const nav = useNavigate();
 
   useEffect(() => {
     if (VerifyToken().availableToken) {
@@ -22,6 +22,7 @@ function Signin() {
     e.preventDefault();
     Logins(e).then((res) => {
       if (res === "ok") {
+        setUser(VerifyToken().myDecodedToken)
         nav("/Home");
       } else {
         alert("Credentials are wrong");
@@ -65,9 +66,6 @@ function Signin() {
             target="_blank"
           >
             <MDBIcon fab icon="github" />
-          </MDBBtn>
-          <MDBBtn color="success" onClick={VerifyToken}>
-            Verify
           </MDBBtn>
         </div>
       </div>

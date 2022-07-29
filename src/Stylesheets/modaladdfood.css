@@ -1,0 +1,15 @@
+.contSelected--food{
+    display: flex;
+}
+
+.selected--food{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-left: 20px;
+    min-width: 50%;
+}
+
+.infoSelected--Food{
+    padding-left: 20px;
+}

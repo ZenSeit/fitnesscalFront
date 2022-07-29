@@ -1,9 +1,6 @@
 import { decodeToken, isExpired } from "react-jwt";
-import { useNavigate } from "react-router-dom";
 
 export async function Logins(e) {
-
-  
 
   const nickname = e.target.nick.value;
   const password = e.target.pass.value;

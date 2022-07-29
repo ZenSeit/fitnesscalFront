@@ -7,6 +7,20 @@ header{
     min-width: 100%;
 }
 
+
 .header--logo{
     width: 80px;
+}
+
+.logo--section{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 80%;
+}
+
+.buttons--section{
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }

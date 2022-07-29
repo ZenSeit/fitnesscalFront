@@ -1,6 +1,7 @@
 .facts--section{
     display: flex;
     flex-direction: column;
+    min-width: 90vw;
 }
 
 .facts--day{
@@ -8,16 +9,11 @@
     justify-content: space-between;
 }
 
-.facts--food{
-    min-width: 30%;
-    max-height: 500px;
-    overflow: hidden;
-    overflow-y: auto;
-}
-
 .wrapper--food{
     display: flex;
     flex-direction: column;
+    min-width: 60%;
+    max-width: 60%;
 }
 
 .facts--info{
@@ -32,4 +28,5 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    margin: 15px;
 }

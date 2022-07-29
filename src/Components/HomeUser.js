@@ -1,68 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { VerifyToken } from "../Services/Login";
-import { useNavigate } from "react-router-dom";
 import defaultImage from "../Images/userDefault.png";
 import "../Stylesheets/homeuser.css";
-import UserDay from "./UserDay";
-import SearchBar from "./SearchBar";
 
 
-export function HomeUser() {
-  const [user, setUser] = useState(null);
-  const [macros, setMacros] = useState({
-    carbs: 40,
-    fat: 30,
-    prot: 30,
-  });
 
-  const getData = async () => {
-    const data = await fetch(
-      "http://localhost:8080/api/getUser/" + VerifyToken().myDecodedToken,
-      {
-        method: "GET",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-          "Authorization":`${localStorage.getItem("token")}`
-        },
-      }
-    );
-
-    const json = await data.json();
-    const res = await json[0];
-    setUser(res);
-  };
-
-  const getFood = async () => {
-    const data = await fetch(
-      "http://localhost:8080/api/getFood/",
-      {
-        method: "GET",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-      }
-    );
-
-    const json = await data.json();
-    return await json;
-  }
-
-  let history = useNavigate();
-
-  useEffect(() => {
-    macrosGoal();
-  }, [user]);
-
-  useEffect(() => {
-    if (VerifyToken().myDecodedToken) {
-      getData();
-    } else {
-      history("/");
-    }
-  }, []);
-
+export function HomeUser({user,macros,calculateCalories}) {
   const userActivity = () => {
     switch (user.activityDay) {
       case 1:
@@ -93,34 +35,6 @@ export function HomeUser() {
     }
   };
 
-  const macrosGoal = () => {
-    switch (user?.fitnessGoal) {
-      case 1:
-        setMacros({
-          carbs: 50,
-          fat: 20,
-          prot: 30,
-        });
-        break;
-
-      case 2:
-        setMacros({
-          carbs: 20,
-          fat: 40,
-          prot: 40,
-        });
-        break;
-
-      default:
-        setMacros({
-          carbs: 40,
-          fat: 30,
-          prot: 30,
-        });
-        break;
-    }
-  };
-
   const StylePie = {
     backgroundImage: `conic-gradient(
       #E35F32 0 ${3.6 * macros.fat}deg, 
@@ -131,10 +45,6 @@ export function HomeUser() {
     display: `block`,
     width: `300px`,
     height: `300px`,
-  };
-
-  const calculateCalories = (calories, percentage) => {
-    return Math.round(calories * percentage * 0.01);
   };
 
   return (
@@ -219,12 +129,6 @@ export function HomeUser() {
         </div>
         
       </div>
-      <UserDay idUser={VerifyToken().myDecodedToken}
-      prote={calculateCalories(user?.caloriesGoal, macros.prot) / 4}
-      carbs={calculateCalories(user?.caloriesGoal, macros.carbs) / 4}
-      fat={calculateCalories(user?.caloriesGoal, macros.fat) / 9}
-      foodAvailable={getFood}
-      />
       </div>
     </>
   );
