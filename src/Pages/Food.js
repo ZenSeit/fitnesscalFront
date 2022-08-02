@@ -1,15 +1,18 @@
 import { MDBBtn } from "mdb-react-ui-kit";
 import React, { useState, useEffect } from "react";
 import { ContentFood } from "../Components/ContentFood";
+import InfoFood from "../Components/InfoFood";
 import ModalAdd from "../Components/ModalAdd";
-import ModalEdit from "../Components/ModalEdit";
+import ModalEditFood from "../Components/ModalEditFood";
 import SearchBar from "../Components/SearchBar";
-import { getFood } from "../Services/DataDB";
+import { getFood,updateFoodId,getFoodId } from "../Services/DataDB";
+import { VerifyToken } from "../Services/Login";
 import "../Stylesheets/foodpage.css";
 
 export default function Food() {
   const [inputWord, setInputWord] = useState("");
   const [dataIn, setDataIn] = useState([]);
+  const [foodSelected,setFoodSelected] = useState()
 
   const dataFormAdd = [
     { name: "Name", type: "text", req:true, value:''},
@@ -31,8 +34,9 @@ export default function Food() {
     );
   };
 
-  const clickDiv = (id) => {
-    console.log("clicking" + id);
+  const clickDiv = async (id) => {
+    const getFood=await getFoodId(VerifyToken().myDecodedToken,id)
+    setFoodSelected(getFood)
   };
 
   const sendNewFood = async (e) =>{
@@ -77,12 +81,15 @@ export default function Food() {
           dataFood={dataIn}
           messageNoData="No food founded"
           clickDiv={clickDiv}
-          Button1={ModalEdit}
+          refresh={()=>getData(inputWord)}
+          updateDataRel={updateFoodId}
+          Button1={ModalEditFood}
           Button2={MDBBtn}
         />
       </div>
       <div className="right--food">
         <ModalAdd fields={dataFormAdd} sendNewFood={sendNewFood} />
+        <InfoFood food={foodSelected} />
       </div>
     </div>
   );

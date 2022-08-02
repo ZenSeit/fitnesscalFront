@@ -23,3 +23,37 @@ export const getFood = async () => {
     );
     return await data.json();
   };
+
+
+  export const getFoodId = async (idus,id) => {
+    const data = await fetch(
+      `http://localhost:8080/api/getFood/${id}`,
+      {
+        method: "GET",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    return await data.json();
+  };
+
+
+  export const updateFoodId = async (updateFood) => {
+    const data = await fetch(
+      `http://localhost:8080/api/updateFood/${updateFood.id}`,
+      {
+        method: "PATCH",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          ...updateFood
+        }),
+      }
+    );
+    return await data.text();
+  };
+

@@ -2,7 +2,7 @@ import React from 'react'
 import Food from './Food';
 import '../Stylesheets/contentfood.css'
 
-export const ContentFood = ({dataFood, updateDataRel,deleteFood,messageNoData,clickDiv,getData,Button1,Button2}) => {
+export const ContentFood = ({dataFood, updateDataRel,deleteFood,messageNoData,clickDiv,getData,Button1,Button2,refresh}) => {
 
     const fDay = dataFood.map((fDay) => {
         return (
@@ -23,6 +23,7 @@ export const ContentFood = ({dataFood, updateDataRel,deleteFood,messageNoData,cl
             getData={getData}
             Button1={Button1}
             Button2={Button2}
+            refresh={refresh}
           />
         );
       });

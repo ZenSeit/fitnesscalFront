@@ -6,26 +6,28 @@ import { useNavigate, useLocation, Link } from "react-router-dom";
 import { SessionContext } from "../Services/SessionContext";
 
 function Signin() {
-  const {state} = useLocation();
+  const { state } = useLocation();
 
-  const {user,setUser} = useContext(SessionContext)
+  const { user, setUser } = useContext(SessionContext);
 
   const nav = useNavigate();
 
+  
+
   useEffect(() => {
     if (VerifyToken().availableToken) {
-      nav(state?.pathname ?? "/Home")
+      nav(state?.pathname ?? "/Home");
     }
-  }, []);
+  }, [user]);
 
   function Log(e) {
     e.preventDefault();
     Logins(e).then((res) => {
       if (res === "ok") {
-        setUser(VerifyToken().myDecodedToken)
-        nav("/Home");
+        setUser(VerifyToken().myDecodedToken);
       } else {
         alert("Credentials are wrong");
+        console.log(state?.pathname)
       }
     });
   }
@@ -69,8 +71,7 @@ function Signin() {
           </MDBBtn>
         </div>
       </div>
-      <div className="back">
-      </div>
+      <div className="back"></div>
     </div>
   );
 }

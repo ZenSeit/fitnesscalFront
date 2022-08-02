@@ -1,10 +1,20 @@
 import React, { useEffect, useState } from "react";
 import defaultImage from "../Images/userDefault.png";
 import "../Stylesheets/homeuser.css";
+import { ModalChangeImage } from "./ModalChangeImage";
 
+export function HomeUser({ user, macros, calculateCalories }) {
 
+  const tryRequire = () => {
+    try {
+     return require(`../${user?.profilePhoto}`);
+    } catch (err) {
+     return defaultImage;
+    }
+  };
 
-export function HomeUser({user,macros,calculateCalories}) {
+  console.log(tryRequire())
+
   const userActivity = () => {
     switch (user.activityDay) {
       case 1:
@@ -49,86 +59,89 @@ export function HomeUser({user,macros,calculateCalories}) {
 
   return (
     <>
-    <div className="Info">
-      <div className="info--container">
-        <div className="info--text">
-          <div className="user--info1">
-            <img
-              src={user?.profilePhoto || defaultImage}
-              className="avatar--user"
-            />
+      <div className="Info">
+        <div className="info--container">
+          <div className="info--text">
+            <div className="user--info1">
+              <div className="visual--user">
+                <img
+                  src={tryRequire()}
+                  className="avatar--user"
+                />
+                  <ModalChangeImage />
+
+              </div>
+              {user && (
+                <h1>Welcome {user.nickname || `usuario ${user.id}`}!</h1>
+              )}
+            </div>
             {user && (
-              <h1>Welcome {user.nickname || `usuario ${user.id}`}!</h1>
+              <>
+                <div className="user--info2">
+                  <h3>Name: {user.name}</h3>
+                  <h3>Lastname: {user.lastname}</h3>
+                  <h4>Age: {user.age} years</h4>
+                  <h4>weight: {user.weight} Kg</h4>
+                  <h4>height: {user.height} cm</h4>
+                  <h4>Country: {user.country}</h4>
+                </div>
+                <div className="user--info3">
+                  <h4>
+                    Gender:
+                    {user.gender
+                      ? "Male"
+                      : user.gender === 2
+                      ? "Female"
+                      : "No one"}
+                  </h4>
+                  <h4>Activity per Day: {userActivity()} </h4>
+                  <h4>Fitness Goal: {userGoal()} </h4>
+                </div>
+              </>
             )}
           </div>
-          {user && (
-            <>
-              <div className="user--info2">
-                <h3>Name: {user.name}</h3>
-                <h3>Lastname: {user.lastname}</h3>
-                <h4>Age: {user.age} years</h4>
-                <h4>weight: {user.weight} Kg</h4>
-                <h4>height: {user.height} cm</h4>
-                <h4>Country: {user.country}</h4>
-              </div>
-              <div className="user--info3">
-                <h4>
-                  Gender:
-                  {user.gender
-                    ? "Male"
-                    : user.gender === 2
-                    ? "Female"
-                    : "No one"}
-                </h4>
-                <h4>Activity per Day: {userActivity()} </h4>
-                <h4>Fitness Goal: {userGoal()} </h4>
-              </div>
-            </>
-          )}
-        </div>
-        <div className="pie--container">
-          {user && (
-            <>
-              <h3>Calories Goal/Day : {Math.round(user.caloriesGoal)}</h3>
-              <div style={StylePie}>
-                <div className="pie--contentup">
-                  <div>
-                    Protein:
-                    {calculateCalories(user?.caloriesGoal, macros.prot)}
+          <div className="pie--container">
+            {user && (
+              <>
+                <h3>Calories Goal/Day : {Math.round(user.caloriesGoal)}</h3>
+                <div style={StylePie}>
+                  <div className="pie--contentup">
+                    <div>
+                      Protein:
+                      {calculateCalories(user?.caloriesGoal, macros.prot)}
+                    </div>
+                    <div>
+                      Fat: {calculateCalories(user?.caloriesGoal, macros.fat)}
+                    </div>
                   </div>
-                  <div>
-                    Fat: {calculateCalories(user?.caloriesGoal, macros.fat)}
+                  <div className="pie--contentdown">
+                    Carbs: {calculateCalories(user?.caloriesGoal, macros.carbs)}
+                  </div>
+                  <div className="pie--stats">
+                    <h5>
+                      Protein :
+                      {`${
+                        calculateCalories(user?.caloriesGoal, macros.prot) / 4
+                      } g`}
+                    </h5>
+                    <h5>
+                      Carbs :
+                      {`${
+                        calculateCalories(user?.caloriesGoal, macros.carbs) / 4
+                      } g`}
+                    </h5>
+                    <h5>
+                      Fat :
+                      {`${
+                        calculateCalories(user?.caloriesGoal, macros.fat) / 9
+                      } g`}
+                    </h5>
                   </div>
                 </div>
-                <div className="pie--contentdown">
-                  Carbs: {calculateCalories(user?.caloriesGoal, macros.carbs)}
-                </div>
-                <div className="pie--stats">
-                  <h5>
-                    Protein :
-                    {`${
-                      calculateCalories(user?.caloriesGoal, macros.prot) / 4
-                    } g`}
-                  </h5>
-                  <h5>
-                    Carbs :
-                    {`${
-                      calculateCalories(user?.caloriesGoal, macros.carbs) / 4
-                    } g`}
-                  </h5>
-                  <h5>
-                    Fat :
-                    {`${
-                      calculateCalories(user?.caloriesGoal, macros.fat) / 9
-                    } g`}
-                  </h5>
-                </div>
-              </div>
-            </>
-          )}
+              </>
+            )}
+          </div>
         </div>
-        
-      </div>
       </div>
     </>
   );

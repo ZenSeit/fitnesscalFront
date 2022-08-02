@@ -19,7 +19,7 @@ function App() {
           <Header />
 
           <Routes>
-            <Route path="/" element={<Signin />} exact />
+            <Route path="/" element={<Signin />} />
             <Route
               path="/Home"
               element={

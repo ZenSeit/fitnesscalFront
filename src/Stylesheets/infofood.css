@@ -1,0 +1,15 @@
+.summary--food{
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    margin: 20px 5px 20px 5px;
+}
+
+
+.factsSummary--food{
+    display: flex;
+}
+
+.factsSummary--food>h4{
+    margin: 5px;
+}

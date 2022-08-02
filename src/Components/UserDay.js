@@ -125,6 +125,7 @@ export default function UserDay({ idUser, prote, carbs, fat, foodAvailable }) {
             getData={getRelFood}
             Button1={ModalEdit}
             Button2={MDBBtn}
+            messageNoData="You don't have food yet"
           />
           <div className="addsection--food">
             <ModalAddFood
