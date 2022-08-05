@@ -2,18 +2,62 @@ import React, { useEffect, useState } from "react";
 import defaultImage from "../Images/userDefault.png";
 import "../Stylesheets/homeuser.css";
 import { ModalChangeImage } from "./ModalChangeImage";
+import {
+  countries,
+  genderUs,
+  activityDay,
+  fitnessG,
+} from "../Services/GeneralData";
+import ModalAdd from "./ModalAdd";
+import { updateUser } from "../Services/DataDB";
+import { MDBIcon } from "mdb-react-ui-kit";
 
-export function HomeUser({ user, macros, calculateCalories }) {
-
+export function HomeUser({ user, macros, calculateCalories, getUser }) {
   const tryRequire = () => {
     try {
-     return require(`../${user?.profilePhoto}`);
+      return require(`../${user?.profilePhoto}`);
     } catch (err) {
-     return defaultImage;
+      return defaultImage;
     }
   };
 
-  console.log(tryRequire())
+  const dataFormEditUser = [
+    {
+      name: "weight",
+      type: "number",
+      step: "0.1",
+      req: true,
+      value: user?.weight,
+      family: "input",
+    },
+    {
+      name: "height",
+      type: "number",
+      step: "0.1",
+      req: true,
+      value: user?.height,
+      family: "input",
+    },
+    {
+      name: "country",
+      family: "select",
+      data: countries,
+      value: user?.country,
+    },
+    { name: "gender", family: "select", data: genderUs, value: user?.gender },
+    {
+      name: "activityDay",
+      family: "select",
+      data: activityDay,
+      value: user?.activityDay,
+    },
+    {
+      name: "fitnessGoal",
+      family: "select",
+      data: fitnessG,
+      value: user?.fitnessGoal,
+    },
+  ];
 
   const userActivity = () => {
     switch (user.activityDay) {
@@ -57,6 +101,12 @@ export function HomeUser({ user, macros, calculateCalories }) {
     height: `300px`,
   };
 
+  const updateInfoUser = async (e, obj) => {
+    e.preventDefault();
+    alert(await updateUser(user.id, obj));
+    getUser();
+  };
+
   return (
     <>
       <div className="Info">
@@ -64,12 +114,20 @@ export function HomeUser({ user, macros, calculateCalories }) {
           <div className="info--text">
             <div className="user--info1">
               <div className="visual--user">
-                <img
-                  src={tryRequire()}
-                  className="avatar--user"
-                />
-                  <ModalChangeImage />
-
+                <img src={tryRequire()} className="avatar--user" />
+                <div className="buttonsProfile--user">
+                  <ModalChangeImage
+                    icon={<MDBIcon icon="camera-retro" />}
+                    tittle="Edit Image profile"
+                    getUser={getUser}
+                  />
+                  <ModalAdd
+                    icon={<MDBIcon fas icon="user-edit" />}
+                    tittle="Edit user"
+                    fields={dataFormEditUser}
+                    sendNewData={updateInfoUser}
+                  />
+                </div>
               </div>
               {user && (
                 <h1>Welcome {user.nickname || `usuario ${user.id}`}!</h1>
@@ -83,7 +141,7 @@ export function HomeUser({ user, macros, calculateCalories }) {
                   <h4>Age: {user.age} years</h4>
                   <h4>weight: {user.weight} Kg</h4>
                   <h4>height: {user.height} cm</h4>
-                  <h4>Country: {user.country}</h4>
+                  <h4>Country: {countries[user.country]?.country}</h4>
                 </div>
                 <div className="user--info3">
                   <h4>

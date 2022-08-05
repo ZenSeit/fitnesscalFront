@@ -49,7 +49,7 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    font-weight: 800;
+    font-weight: 600;
 }
 
 .pie--stats{
@@ -58,11 +58,19 @@
 
 .info--container{
     display: flex;
-    min-width: 90vw;
+    min-width: 100vw;
 }
 
 .Info{
     display: flex;
     flex-direction: column;
     margin-bottom: 50px;
+}
+
+.buttonsProfile--user{
+    display: flex;
+}
+
+.buttonsProfile--user>button{
+    margin: 5px;
 }

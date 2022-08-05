@@ -8,10 +8,12 @@ import {
   MDBModalTitle,
   MDBModalBody,
   MDBModalFooter,
+  MDBIcon
 } from "mdb-react-ui-kit";
 import { VerifyToken } from "../Services/Login";
+import {deletePhotoUser} from '../Services/DataDB'
 
-export const ModalChangeImage = () => {
+export const ModalChangeImage = ({tittle, icon, getUser}) => {
   const [basicModal, setBasicModal] = useState(false);
 
   const toggleShow = () => setBasicModal(!basicModal);
@@ -36,18 +38,23 @@ export const ModalChangeImage = () => {
         }
       );
       const res= await data.text();
-      console.log(res)
-
+      alert(res)
+      await getUser()
   };
+
+  const delPhoto = async () =>{
+    await deletePhotoUser(idUser)
+    await getUser()
+  }
 
   return (
     <>
-      <MDBBtn onClick={toggleShow}></MDBBtn>
+      <MDBBtn onClick={toggleShow}>{icon}</MDBBtn>
       <MDBModal show={basicModal} setShow={setBasicModal} tabIndex="-1">
         <MDBModalDialog>
           <MDBModalContent>
             <MDBModalHeader>
-              <MDBModalTitle>Change User Image</MDBModalTitle>
+              <MDBModalTitle>{tittle}</MDBModalTitle>
               <MDBBtn
                 className="btn-close"
                 color="none"
@@ -59,6 +66,9 @@ export const ModalChangeImage = () => {
                 <input type="file" name="userImage" />
                 <MDBBtn>Save changes</MDBBtn>
               </form>
+              <hr/>
+              <MDBBtn onClick={delPhoto}><MDBIcon fas icon="times" /> photo</MDBBtn>
+            
             </MDBModalBody>
 
             <MDBModalFooter></MDBModalFooter>

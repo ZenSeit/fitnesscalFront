@@ -18,7 +18,7 @@ import "../Stylesheets/modaleditfood.css";
 export default function ModalEditFood({ id, updateFood, refresh}) {
   const idus = VerifyToken().myDecodedToken;
   const [editFood, setEditFood] = useState(false);
-  const [dataFood, setDataFood] = useState({});
+  const [dataFood, setDataFood] = useState({proteinQGr:0,carbsQGr:0,fatQGr:0});
 
   const toggleShow = async () => {
     const res = await getFoodId(idus, id);

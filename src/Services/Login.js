@@ -1,9 +1,7 @@
 import { decodeToken, isExpired } from "react-jwt";
 
-export async function Logins(e) {
+export async function Logins(nickname, password) {
 
-  const nickname = e.target.nick.value;
-  const password = e.target.pass.value;
   const res = await fetch("http://localhost:8080/api/login", {
     method: "POST",
     headers: {

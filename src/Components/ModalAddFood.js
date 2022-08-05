@@ -39,6 +39,14 @@ export default function ModalAddFood({ foodAvailable, daySelected }) {
     setModalAdd(!modalAdd);
   };
 
+  const stFoodDay =(e)=>{
+    setFoodDay(e.target.value)
+  }
+
+  const stUnitMeasu =(e)=>{
+    setFoodDay(e.target.value)
+  }
+
   const clickedFilter = (data) => {
     setFoodSelected(data);
     setQadd(1)
@@ -118,8 +126,8 @@ export default function ModalAddFood({ foodAvailable, daySelected }) {
                   value={qAdd}
                   onChange={(e) => setQadd(e.target.value)}
                 />
-                <Select name='dayEdit' data={days} actionSelect={setFoodDay} valueSelected={daySelected} />
-                <Select name='unitsEdit' data={unitMeasurent} actionSelect={setUnitMeasu} />
+                <Select name='day' data={days} actionSelect={stFoodDay} valueSelected={daySelected} />
+                <Select name='unit' data={unitMeasurent} actionSelect={stUnitMeasu} />
                 <MDBBtn>Save changes</MDBBtn>
                 </form>
                 </>

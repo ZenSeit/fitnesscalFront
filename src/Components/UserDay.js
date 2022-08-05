@@ -52,7 +52,8 @@ export default function UserDay({ idUser, prote, carbs, fat, foodAvailable }) {
   }, [foodDay]);
 
   const getValue = async (e) => {
-    const day = e ?? 0;
+
+    const day = e?.target.value ?? 0;
 
     const data = await fetch(
       "http://localhost:8080/api/getFoodforuser/" + idUser + "?day=" + day,

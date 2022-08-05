@@ -27,8 +27,9 @@ export default function Header() {
         <img src={headerLogo} className="header--logo" />
         <h1>My fitness Cal</h1>
       </div>
+      {VerifyToken().availableToken && (
       <div className="buttons--section">
-        {VerifyToken().availableToken && (
+        
           <>
           {renderRoutes.map(
             (r,idx) => {return <Link key={idx} to={`/${r.route}`}>{r.route}</Link>}
@@ -36,8 +37,9 @@ export default function Header() {
           
           <Button name="Log out" color="dark" action={LogOut} />
           </> 
-        )}
+        
       </div>
+      )}
     </header>
   );
 }

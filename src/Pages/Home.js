@@ -93,7 +93,7 @@ export default function Home() {
 
   return (
     <>
-    <HomeUser user={user} macros={macros} calculateCalories={calculateCalories} />
+    <HomeUser user={user} macros={macros} calculateCalories={calculateCalories} getUser={getData} />
     <UserDay
       idUser={VerifyToken().myDecodedToken}
       prote={calculateCalories(user?.caloriesGoal, macros.prot) / 4}
